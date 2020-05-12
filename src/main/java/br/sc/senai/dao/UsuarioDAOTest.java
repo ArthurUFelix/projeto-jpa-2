@@ -17,36 +17,40 @@ public class UsuarioDAOTest {
 
         entityManager = factory.createEntityManager();
 
-//        insert();
+        insert();
 
-        Usuario usuario = new Usuario();
-        usuario.setEmail("arthur@gmail.com");
-        usuario.setNome("Arthur Felix");
-        usuario.setSenha("12345");
-
-        boolean found = login(usuario);
-
-        if(found) {
-            System.out.println("Login efetuado com sucesso");
-        } else {
-            System.out.println("Usuário e/ou senha inválidos");
-        }
+//        Usuario usuario = new Usuario();
+//        usuario.setEmail("arthur@gmail.com");
+//        usuario.setNome("Arthur Felix");
+//        usuario.setSenha("12345");
+//
+//        boolean found = login(usuario);
+//
+//        if(found) {
+//            System.out.println("Login efetuado com sucesso");
+//        } else {
+//            System.out.println("Usuário e/ou senha inválidos");
+//        }
 
         entityManager.close();
         factory.close();
     }
 
     public static void insert() {
-        entityManager.getTransaction().begin();
+        try {
+            entityManager.getTransaction().begin();
 
-        Usuario novoUsuario = new Usuario();
-        novoUsuario.setEmail("pedro@gmail.com");
-        novoUsuario.setNome("Pedro Moratelli");
-        novoUsuario.setSenha("12345");
+            Usuario novoUsuario = new Usuario();
+            novoUsuario.setEmail("arthur@gmail.com");
+            novoUsuario.setNome("Arthur Felix");
+            novoUsuario.setSenha("12345");
 
-        entityManager.persist(novoUsuario);
+            entityManager.persist(novoUsuario);
 
-        entityManager.getTransaction().commit();
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("O email informado já está em uso");
+        }
     }
 
     public static boolean login(Usuario usuario) {
