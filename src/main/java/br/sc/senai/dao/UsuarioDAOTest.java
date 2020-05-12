@@ -17,7 +17,20 @@ public class UsuarioDAOTest {
 
         entityManager = factory.createEntityManager();
 
-        insert();
+//        insert();
+
+        Usuario usuario = new Usuario();
+        usuario.setEmail("arthur@gmail.com");
+        usuario.setNome("Arthur Felix");
+        usuario.setSenha("12345");
+
+        boolean found = login(usuario);
+
+        if(found) {
+            System.out.println("Login efetuado com sucesso");
+        } else {
+            System.out.println("Usuário e/ou senha inválidos");
+        }
 
         entityManager.close();
         factory.close();
@@ -34,5 +47,25 @@ public class UsuarioDAOTest {
         entityManager.persist(novoUsuario);
 
         entityManager.getTransaction().commit();
+    }
+
+    public static boolean login(Usuario usuario) {
+        boolean found = true;
+
+        try {
+            Query q = entityManager.createNamedQuery("Usuario.login");
+
+            q.setParameter("email", usuario.getEmail());
+            q.setParameter("senha", usuario.getSenha());
+
+            Usuario usuarioLogin = (Usuario) q.getSingleResult();
+
+            System.out.println("O usuário logado é: " + usuarioLogin.getNome());
+        } catch (Exception e) {
+//            e.printStackTrace();
+            found = false;
+        }
+
+        return found;
     }
 }
